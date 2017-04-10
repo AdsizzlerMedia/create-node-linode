@@ -1,0 +1,61 @@
+---
+- include_vars: /vars/main.yml
+- name: Fail if server_hostname is not defined
+  fail: msg="server_hostname needs to be defined via commandline, e.g. --extra-vars server_hostname=flower"
+  when: server_hostname is not defined
+
+- name: Create linode server via Linode API
+  linode:
+    api_key: "{{ api_key }}"
+    name: "{{ server_hostname }}"
+    plan: "{{ linode_plan }}"
+    datacenter: "{{ linode_datacenter }}"
+    private_ip: yes
+    distribution: "{{ linode_distribution }}"
+    password: "{{password}}"
+    ssh_pub_key: "{{ ssh_pub_key }}"
+    swap: "{{ linode_swap }}"
+    wait: yes
+    wait_timeout: 600
+    state: present
+    alert_bwquota_enabled: True
+    alert_bwquota_threshold: 80
+    alert_bwin_enabled: True
+    alert_bwin_threshold: 10
+    alert_cpu_enabled: True
+    alert_cpu_threshold: 210
+    alert_diskio_enabled: True
+    alert_bwout_enabled: True
+    alert_bwout_threshold: 10
+    alert_diskio_enabled: True
+    alert_diskio_threshold: 10000
+  register: localhost
+
+- name: Show me the registered linode
+  debug: var=localhost
+
+- name: Add new host to tracking inventory
+  add_host:
+    hostname: "{{ localhost.instance.ipv4 }}"
+    groupname: "localhost"
+
+- name: Wait for Linode to listen on port 22
+  wait_for:
+    state: started
+    host: "{{ localhost.instance.ipv4 }}"
+    port: 22
+##
+#
+
+
+
+
+
+
+
+
+
+
+
+
+#

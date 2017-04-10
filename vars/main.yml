@@ -1,0 +1,21 @@
+---
+  user: anky
+  password: 
+  public_key: ~/.ssh/id_rsa.pub
+
+  fqdn: host.example.com
+  hostname: host
+  timezone: "Asia/Kolkata"
+  ssh_port: 
+
+  
+  enable_custom_shell: yes
+  
+  server_domain: adsizzler.com
+  server_hostname: 1
+  linode_swap: 1024
+  linode_plan: 1
+  linode_datacenter: 9
+  linode_distribution: 129
+  api_key: 'api_key'
+  ssh_pub_key: 'ssh_pub_key'
